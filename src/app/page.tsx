@@ -10,17 +10,17 @@ export default function Home() {
   const [synonyms, setSynonyms] = useState<string[]>([]);
   const inputRef = useRef() as RefObject<HTMLInputElement>;
 
-  useEffect(() => {
-    if (word) getSynonyms();
-    inputRef.current?.focus();
-  }, []);
-
   const getSynonyms = async () => {
     const res = await axios.get(API_URL + word, {
       headers: { "X-Api-Key": "gyyejB4K8GtHf0ukzl4pHA==Hw766ayiyKPPmn1Z" },
     });
     setSynonyms(res.data.synonyms);
   };
+
+  useEffect(() => {
+    if (word) getSynonyms();
+    inputRef.current?.focus();
+  }, [word, getSynonyms]);
 
   const handleClickWord = (w: string) => {
     setWord(w);
