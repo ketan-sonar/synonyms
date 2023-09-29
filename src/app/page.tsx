@@ -3,8 +3,6 @@
 import axios from "axios";
 import { RefObject, useEffect, useRef, useState } from "react";
 
-const API_URL = "https://api.api-ninjas.com/v1/thesaurus?word=";
-
 export default function AnotherOne() {
   const [loading, setLoading] = useState(false);
   const [word, setWord] = useState("");
@@ -16,10 +14,11 @@ export default function AnotherOne() {
     if (!word) return;
 
     setLoading(true);
-    const res = await axios.get(API_URL + word, {
-      headers: { "X-Api-Key": "gyyejB4K8GtHf0ukzl4pHA==Hw766ayiyKPPmn1Z" },
-    });
-    setSynonyms(res.data.synonyms.slice(0, 5));
+    const res: { data: { success: boolean; synonyms: string[] } } =
+      await axios.post("/api/getSynonyms", { word });
+    if (res.data.success) {
+      setSynonyms(res.data.synonyms.slice(0, 5));
+    }
     setLoading(false);
   };
 
