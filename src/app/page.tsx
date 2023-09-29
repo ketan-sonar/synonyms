@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 const API_URL = "https://api.api-ninjas.com/v1/thesaurus?word=";
 
@@ -10,12 +10,12 @@ export default function Home() {
   const [synonyms, setSynonyms] = useState<string[]>([]);
   const inputRef = useRef() as RefObject<HTMLInputElement>;
 
-  const getSynonyms = async () => {
+  const getSynonyms = useCallback(async () => {
     const res = await axios.get(API_URL + word, {
       headers: { "X-Api-Key": "gyyejB4K8GtHf0ukzl4pHA==Hw766ayiyKPPmn1Z" },
     });
     setSynonyms(res.data.synonyms);
-  };
+  }, [word]);
 
   useEffect(() => {
     if (word) getSynonyms();
