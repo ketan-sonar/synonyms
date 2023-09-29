@@ -1,67 +1,88 @@
 "use client";
 
 import axios from "axios";
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 const API_URL = "https://api.api-ninjas.com/v1/thesaurus?word=";
 
-export default function Home() {
+export default function AnotherOne() {
+  const [loading, setLoading] = useState(false);
   const [word, setWord] = useState("");
+  const [wordToSearch, setWordToSearch] = useState("");
   const [synonyms, setSynonyms] = useState<string[]>([]);
   const inputRef = useRef() as RefObject<HTMLInputElement>;
 
-  const getSynonyms = useCallback(async () => {
+  const getSynonyms = async () => {
+    if (!word) return;
+
+    setLoading(true);
     const res = await axios.get(API_URL + word, {
       headers: { "X-Api-Key": "gyyejB4K8GtHf0ukzl4pHA==Hw766ayiyKPPmn1Z" },
     });
-    setSynonyms(res.data.synonyms);
-  }, [word]);
+    setSynonyms(res.data.synonyms.slice(0, 5));
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (word) getSynonyms();
     inputRef.current?.focus();
-  }, [word, getSynonyms]);
+  }, []);
 
-  const handleClickWord = (w: string) => {
-    setWord(w);
+  useEffect(() => {
     getSynonyms();
-  };
+  }, [wordToSearch]);
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <div className="container max-w-md flex flex-col rounded border p-6">
+      <div className="container max-w-md">
         <h1 className="text-3xl text-center">Synonyms</h1>
-        <hr className="w-full" />
-        <div className="WordInput my-2 flex">
+        <hr />
+        <div className="flex my-4">
           <input
-            className="px-2 py-1 grow text-xl border border-black rounded-l focus:outline-none"
+            className="text-xl px-2 py-1 grow border border-black focus:outline-none rounded-l"
             type="text"
             value={word}
-            onChange={(e) => setWord(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && getSynonyms()}
             ref={inputRef}
+            onChange={(e) => setWord(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setWordToSearch(word);
+                getSynonyms();
+              }
+            }}
           />
           <button
-            className="bg-black text-white px-2 py-1 text-xl rounded-r"
-            onClick={getSynonyms}
+            className="text-xl bg-black text-white px-2 py-1 rounded-r"
+            onClick={() => {
+              setWordToSearch(word);
+              getSynonyms();
+            }}
           >
             Search
           </button>
         </div>
-        <div className="SynonymsList text-xl flex justify-center p-4">
-          <ul className="space-y-2">
-            {synonyms.slice(0, 5).map((s, i) => (
-              <li key={i}>
-                <button
-                  className="underline"
-                  onClick={() => handleClickWord(s)}
-                >
-                  {`${i + 1}. ${s}`}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {loading ? (
+          <p className="text-center p-4">Loading...</p>
+        ) : synonyms.length === 0 ? (
+          <p className="text-center p-4">Nothing to show.</p>
+        ) : (
+          <div className="container max-w-sm flex justify-center p-4">
+            <ul>
+              {synonyms.map((s, i) => (
+                <li key={i}>
+                  <button
+                    className="underline text-xl"
+                    onClick={() => {
+                      setWord(s);
+                      setWordToSearch(s);
+                    }}
+                  >
+                    {`${i + 1}. ${s}`}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
