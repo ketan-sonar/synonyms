@@ -1,34 +1,30 @@
 "use client";
 
 import axios from "axios";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 export default function AnotherOne() {
   const [loading, setLoading] = useState(false);
   const [word, setWord] = useState("");
-  const [wordToSearch, setWordToSearch] = useState("");
   const [synonyms, setSynonyms] = useState<string[]>([]);
+  const wordToSearch = useRef("");
   const inputRef = useRef() as RefObject<HTMLInputElement>;
 
-  const getSynonyms = async () => {
-    if (!word) return;
+  const getSynonyms = useCallback(async () => {
+    if (wordToSearch.current === "") return;
 
     setLoading(true);
     const res: { data: { success: boolean; synonyms: string[] } } =
-      await axios.post("/api/getSynonyms", { word });
+      await axios.post("/api/getSynonyms", { word: wordToSearch.current });
     if (res.data.success) {
       setSynonyms(res.data.synonyms.slice(0, 5));
     }
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    getSynonyms();
-  }, [wordToSearch]);
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -44,7 +40,7 @@ export default function AnotherOne() {
             onChange={(e) => setWord(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                setWordToSearch(word);
+                wordToSearch.current = word;
                 getSynonyms();
               }
             }}
@@ -52,7 +48,7 @@ export default function AnotherOne() {
           <button
             className="text-xl bg-black text-white px-2 py-1 rounded-r"
             onClick={() => {
-              setWordToSearch(word);
+              wordToSearch.current = word;
               getSynonyms();
             }}
           >
@@ -72,7 +68,8 @@ export default function AnotherOne() {
                     className="underline text-xl"
                     onClick={() => {
                       setWord(s);
-                      setWordToSearch(s);
+                      wordToSearch.current = s;
+                      getSynonyms();
                     }}
                   >
                     {`${i + 1}. ${s}`}
