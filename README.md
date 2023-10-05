@@ -12,6 +12,6 @@ A simple web app that shows the synonyms of a word.
 ## Local Setup
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
