@@ -17,7 +17,7 @@ A simple web app that shows the synonyms of a word.
    npm i -g @pnpm/exe
    ```
 
-1. Install the dependencies.
+1. Install the dependencies and run it locally.
 
    ```sh
    pnpm install
