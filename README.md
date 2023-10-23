@@ -11,7 +11,19 @@ A simple web app that shows the synonyms of a word.
 
 ## Local Setup
 
-```sh
-pnpm install
-pnpm run dev
-```
+1. Install pnpm if not already installed.
+
+   ```sh
+   npm i -g @pnpm/exe
+   ```
+
+2. Install the dependencies.
+
+   ```sh
+   pnpm install
+   pnpm run dev
+   ```
+
+3. Login to [API Ninjas](https://api-ninjas.com/)
+
+4. Copy the API Key and put it in the .env file (Look at the .env.example file for reference)
