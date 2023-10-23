@@ -3,7 +3,7 @@
 import axios from "axios";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 
-export default function AnotherOne() {
+export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [word, setWord] = useState("");
   const [synonyms, setSynonyms] = useState<string[]>([]);
