@@ -9,6 +9,10 @@ A simple web app that shows the synonyms of a word.
 1. TypeScript
 1. axios for doing API calls
 
+## API
+
+I have used the [Datamuse API](https://www.datamuse.com/api/) to get the synonyms of the words.
+
 ## Local Setup
 
 1. Install pnpm if not already installed.
