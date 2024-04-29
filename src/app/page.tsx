@@ -12,7 +12,7 @@ export default async function SynonymsPage({
 
   return (
     <main className="w-screen h-screen flex flex-col justify-center items-center">
-      <div className="w-full max-w-sm h-full md:max-h-96 overflow-y-scroll border border-black p-4 flex flex-col gap-4">
+      <div className="w-full max-w-sm h-full md:max-h-96 overflow-y-scroll md:border md:border-black p-4 flex flex-col gap-4">
         <SynonymsInput word={word} />
         {word ? (
           <SynonymsList word={word} />

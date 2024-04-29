@@ -1,23 +1,12 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import handleSubmit from "@/app/actions/handle-submit";
 
 type SynonymsInputProps = {
   word: string | undefined;
 };
 
 export default function SynonymsInput({ word }: SynonymsInputProps) {
-  const router = useRouter();
-
-  const handleSubmit = (formData: FormData) => {
-    const wordToSearch = formData.get("wordToSearch")
-    if (wordToSearch && wordToSearch !== "") {
-      router.push(`?word=${wordToSearch}`);
-    }
-  };
-
   return (
-    <form action={handleSubmit} className="flex w-full">
+    <form action={handleSubmit} className="flex">
       <input
         type="text"
         name="wordToSearch"

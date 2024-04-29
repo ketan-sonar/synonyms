@@ -16,6 +16,7 @@ type SynonymsListProps = {
 };
 
 export default function SynonymsList({ word }: SynonymsListProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [synonyms, setSynonyms] = useState<Synonym[]>([]);
 
@@ -30,6 +31,7 @@ export default function SynonymsList({ word }: SynonymsListProps) {
       newSynonyms.sort((a, b) => a.score - b.score);
       newSynonyms = newSynonyms.slice(0, 10);
       setSynonyms(newSynonyms);
+      setIsLoading(false);
     })();
   }, []);
 
@@ -39,17 +41,21 @@ export default function SynonymsList({ word }: SynonymsListProps) {
     );
   }
 
+  if (isLoading) {
+    return (
+      <p className="text-green-500">Loading...</p>
+    );
+  }
+
   return (
-    <>
-      <ul className="list-decimal pl-8">
-        {synonyms.map((synonym) => (
-          <li key={synonym.word}>
-            <button className="underline" onClick={() => goToLink(synonym.word)}>
-              {synonym.word}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className="list-decimal pl-8">
+      {synonyms.map((synonym) => (
+        <li key={synonym.word}>
+          <button className="underline" onClick={() => goToLink(synonym.word)}>
+            {synonym.word}
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }
