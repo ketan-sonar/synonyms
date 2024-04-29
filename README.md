@@ -23,7 +23,3 @@ A simple web app that shows the synonyms of a word.
    pnpm install
    pnpm run dev
    ```
-
-1. Login to [API Ninjas](https://api-ninjas.com/)
-
-1. Copy the API Key and put it in the .env file (Look at the .env.example file for reference)
