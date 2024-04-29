@@ -28,7 +28,6 @@ export default function SynonymsList({ word }: SynonymsListProps) {
         return;
       }
       let newSynonyms: Synonym[] = res.data;
-      newSynonyms.sort((a, b) => a.score - b.score);
       newSynonyms = newSynonyms.slice(0, 10);
       setSynonyms(newSynonyms);
       setIsLoading(false);
